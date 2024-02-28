@@ -59,11 +59,17 @@ if "--no-networks" in sys.argv:
 if os.name == "nt":
 	def find_cl_path():
 		import glob
-		for executable in ["Program Files (x86)", "Program Files"]:
-			for edition in ["Enterprise", "Professional", "BuildTools", "Community"]:
-				paths = sorted(glob.glob(f"D:\\{executable}\\Microsoft Visual Studio\\*\\{edition}\\VC\\Tools\\MSVC\\*\\bin\\Hostx64\\x64"), reverse=True)
-				if paths:
-					return paths[0]
+		possible_drives = ["C:", "D:", "E:", "F:", "G:", "H:", "I:", "J:", "K:", "L:", "M:", "N:", "O:", "P:", "Q:", "R:", "S:", "T:", "U:", "V:", "W:", "X:", "Y:", "Z:"]
+	    for drive in possible_drives:
+	        for executable in ["Program Files (x86)", "Program Files"]:
+	            for edition in ["Enterprise", "Professional", "BuildTools", "Community"]:
+	                path = os.path.join(drive, executable, f"Microsoft Visual Studio\\*\\{edition}\\VC\\Tools\\MSVC\\*\\bin\\Hostx64\\x64")
+	                paths = sorted(glob.glob(path), reverse=True)
+	                if paths:
+	                    return paths[0]
+# Example usage
+cl_path = find_cl_path()
+print("CL Path:", cl_path)
 
 	# If cl.exe is not on path, try to find it.
 	if os.system("where cl.exe >nul 2>nul") != 0:
